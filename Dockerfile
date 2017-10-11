@@ -22,6 +22,17 @@ ENV DEBIAN_FRONTEND noninteractive
 ADD ./01_nodoc /etc/dpkg/dpkg.cfg.d/01_nodoc
 ADD ./02_nolocales /etc/dpkg/dpkg.cfg.d/02_nolocales
 
+# These files provided by https://github.com/resin-io/qemu/releases/tag/v2.9.0%2Bresin1
+# and https://github.com/resin-io-projects/armv7hf-debian-qemu to enable running
+# ARM binaries on a non-binfmt_misc environment; cf.
+# https://resin.io/blog/building-arm-containers-on-any-x86-machine-even-dockerhub/
+ADD thirdparty/qemu-arm-static /usr/bin
+ADD thirdparty/resin-xbuild /usr/bin
+ADD thirdparty/cross-build-start /usr/bin
+ADD thirdparty/cross-build-end /usr/bin
+
+RUN [ "cross-build-start" ]
+
 # The following list of libraries was determined from the binaries up to the
 # top most layer.
 RUN mkdir -p /usr/share/man/man1 && \
@@ -58,4 +69,6 @@ RUN cd /tmp && \
     cd /tmp && rm -fr FlintPlusPlus-master master.zip && \
     cd /tmp && wget --no-check-certificate https://github.com/oclint/oclint/releases/download/v0.13/oclint-0.13-x86_64-linux-4.4.0-93-generic.tar.gz && \
     tar xvzf /tmp/oclint-0.13-x86_64-linux-4.4.0-93-generic.tar.gz -C /usr/local && rm -f /tmp/oclint-0.13-x86_64-linux-4.4.0-93-generic.tar.gz
+
+RUN [ "cross-build-end" ]
 

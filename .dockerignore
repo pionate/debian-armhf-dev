@@ -1,2 +1,6 @@
 Dockerfile
 README.md
+thirdparty/LICENSE
+thirdparty/README.md
+thirdparty/qemu-2.9.0.resin1-arm.tar.gz
+thirdparty/resin-xbuild.go
